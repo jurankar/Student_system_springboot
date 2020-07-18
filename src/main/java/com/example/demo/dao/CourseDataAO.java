@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Repository("noPostgresDao")
@@ -17,12 +18,23 @@ public class CourseDataAO implements CourseDao {
     @Override
     public UUID addCourse(UUID id, Course course) {
         fakeDatabase.add(new Course(id, course.getCourseName(), course.getDescription(), course.isEnrolled()));
+        List<Course> fd = fakeDatabase;
         return id;
     }
 
     @Override
     public List<Course> getCourses() {
-        return fakeDatabase;
+        var database = fakeDatabase;
+        return database;
+    }
+
+    @Override
+    public List<Course> getEnrolledCourses() {
+        return fakeDatabase.
+                stream()
+                .filter(course -> course.isEnrolled().equals("true"))
+                .collect(Collectors.toList());
+
     }
 
     @Override
@@ -54,16 +66,18 @@ public class CourseDataAO implements CourseDao {
 
     @Override
     public int updateCourse(UUID id, Course courseChanged) {
-        return getCourse(id)
+        Optional<Course> found_course = getCourse(id);
+        var debug = getCourse(id)
                 .map(course -> {
                     int indexOfCourseToDelete = fakeDatabase.indexOf(course);
-                    if(indexOfCourseToDelete > 0){  // če nč ne najdemo je -1
-                        fakeDatabase.set(indexOfCourseToDelete, new Course(id, courseChanged.getCourseName(), courseChanged.getDescription()));
+                    if(indexOfCourseToDelete >= 0){  // če nč ne najdemo je -1
+                        fakeDatabase.set(indexOfCourseToDelete, new Course(id, courseChanged.getCourseName(), courseChanged.getDescription(), courseChanged.isEnrolled()));
                         return 1;
                     }
                     return 0;   // --> v bazi ni tega coursa
                 })
-                .orElse(0);
+                .orElse(2);
+        return debug;
     }
 }
 

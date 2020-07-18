@@ -25,38 +25,51 @@ public class CourseController {
 
     @GetMapping
     public List<Course> getCourses(){
-        return courseService.getAllCourses();
+        var courses = courseService.getAllCourses();
+        return courses;
     }
 
-    @GetMapping(path = "{id}")
-    public Course getPersonById(@NotNull @PathVariable("id") UUID id){
+    @GetMapping(path = "/enrolled")
+    public List<Course> getEnrolledCourses(){
+        return courseService.getEnrolledCourses();
+    }
+
+    @GetMapping(path = "/{id}")
+    public Course getCourseById(@NotNull @PathVariable("id") UUID id){
         return courseService.getCourseByID(id)
+                .orElse(null);
+    }
+
+    @GetMapping(path = "/name/{id}")
+    public Course getCourseById(@NotNull @PathVariable("name") String name){
+        return courseService.getCourseByName(name)
                 .orElse(null);
     }
 
     @PostMapping
     public UUID createNewCourse(@NotNull @RequestBody Course course){
-        return courseService.insertNewCourse(course);
+        var course_ = courseService.insertNewCourse(course);
+        return course_;
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteCourse(@NotNull @PathVariable("id") UUID id){
         courseService.deleteCourse(id);
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "/{id}")
     public void updateCourse(@NotNull @PathVariable("id") UUID id, @NotNull @Valid @RequestBody Course course){
         courseService.updateCourse(id, course);
     }
 
-    @PutMapping(path = "{name}/enroll")
+    @PutMapping(path = "/{name}/enroll")
     public void enrollCourse(@NotNull @PathVariable("name") String name){
-        courseService.enrollClassByName(name, true);
+        courseService.enrollClassByName(name, "true");
     }
 
-    @PutMapping(path = "{name}/cancel_enroll")
+    @PutMapping(path = "/{name}/cancel_enroll")
     public void cancel_enrollCourse(@NotNull @PathVariable("name") String name){
-        courseService.enrollClassByName(name, true);
+        courseService.enrollClassByName(name, "false");
     }
 
 }

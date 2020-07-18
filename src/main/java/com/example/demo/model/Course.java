@@ -7,10 +7,10 @@ public class Course {
     private UUID courseId;
     private String courseName;
     private String description;
-    private boolean enrolled;
+    private String enrolled;
 
     //constructor
-    public Course(UUID courseId, String courseName, String description, boolean enrolled) {
+    public Course(UUID courseId, String courseName, String description, String enrolled) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.description = description;
@@ -30,7 +30,7 @@ public class Course {
         this.description = description;
     }
 
-    public void setEnrolled(boolean enrolled) {
+    public void setEnrolled(String enrolled) {
         this.enrolled = enrolled;
     }
 
@@ -47,7 +47,7 @@ public class Course {
         return description;
     }
 
-    public boolean isEnrolled() {
+    public String isEnrolled() {
         return enrolled;
     }
 

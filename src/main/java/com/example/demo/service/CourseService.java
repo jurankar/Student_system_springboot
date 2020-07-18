@@ -22,11 +22,17 @@ public class CourseService {
     }
 
     public List<Course> getAllCourses() {
-        return courseDao.getCourses();
+        var courses = courseDao.getCourses();
+        return courses;
+    }
+
+    public List<Course> getEnrolledCourses(){
+        return courseDao.getEnrolledCourses();
     }
 
     public UUID insertNewCourse(Course course) {
-        return courseDao.addCourse(course);
+        var a = courseDao.addCourse(course);
+        return a;
     }
 
     public Optional<Course> getCourseByID(UUID courseId) {
@@ -45,7 +51,7 @@ public class CourseService {
         courseDao.updateCourse(courseID, course);
     }
 
-    public void enrollClassByName(String courseName, boolean enroll) {
+    public void enrollClassByName(String courseName, String enroll) {
         Course course = getCourseByName(courseName).get();
         UUID courseId = course.getCourseId();
 

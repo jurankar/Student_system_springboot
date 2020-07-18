@@ -17,6 +17,8 @@ public interface CourseDao {
 
     List<Course> getCourses();
 
+    List<Course> getEnrolledCourses();
+
     Optional<Course> getCourse(UUID id);
 
     Optional<Course> getCourseByName(String courseName);
