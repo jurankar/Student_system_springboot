@@ -6,7 +6,9 @@ import com.example.demo.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -40,10 +42,12 @@ public class CourseController {
                 .orElse(null);
     }
 
-    @GetMapping(path = "/name/{id}")
-    public Course getCourseById(@NotNull @PathVariable("name") String name){
-        return courseService.getCourseByName(name)
-                .orElse(null);
+    @GetMapping(path = "/name/{name}")
+    public List<Course> getCourseByName(@NotNull @PathVariable("name") String name){
+        List<Course> fakeDatabase = new ArrayList<>();
+        Course course = courseService.getCourseByName(name).get();
+        fakeDatabase.add(course);
+        return fakeDatabase;
     }
 
     @PostMapping
